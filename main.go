@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/ChristinaKozi/go-api/controllers"
 	"github.com/ChristinaKozi/go-api/services"
@@ -42,6 +43,9 @@ func init() {
 	usercontroller = controllers.New(userservice)
 	server = gin.Default()
 }
+func myfunc(c *gin.Context) {
+	c.JSON(http.StatusOK, "poop balls")
+}
 
 func main() {
 	defer mongoclient.Disconnect(ctx)
@@ -49,5 +53,7 @@ func main() {
 	basepath := server.Group("/v1")
 	usercontroller.RegisterUserRoutes(basepath)
 
+	test := server.Group("testz")
+	test.GET("poop", myfunc)
 	log.Fatal(server.Run(":9090"))
 }
